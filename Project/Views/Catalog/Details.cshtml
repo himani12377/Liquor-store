@@ -1,0 +1,47 @@
+﻿@model Project.ViewModels.CatalogViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Products</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+        <dd>
+            @Model.Name
+        </dd>
+        <dt>
+            Image
+        </dt>
+        <dd>
+            <img src="~/images/products/@Model.ImageFileName" />
+        </dd>
+        <dt>
+            Unit Cost
+        </dt>
+        <dd>
+            @Model.UnitCost
+        </dd>
+        <dt>
+            Description
+        </dt>
+        <dd>
+            @Model.Description)
+        </dd>
+        <dt>
+            Category
+        </dt>
+        <dd>
+            @Model.CategoryName
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

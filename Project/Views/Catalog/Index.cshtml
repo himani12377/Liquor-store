@@ -1,0 +1,71 @@
+﻿@*@model IEnumerable<MVCManukauTech.ViewModels.CatalogViewModel>*@
+
+@using Project.Helper
+
+@model PaginatedList<Project.ViewModels.CatalogViewModel>
+
+@{
+    //Are we showing all the products or only one category?
+    if (ViewBag.CategoryName == null)
+    {
+        ViewBag.Title = "Catalog";
+    }
+    else
+    {
+        ViewBag.Title = "Catalog - " + ViewBag.CategoryName;
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+<div class="row catalog">
+    @foreach (var item in Model)
+    {
+
+
+        <div class="col-sm-4 my-3">
+            <a href="~/Catalog/Details?ProductId=@item.ProductId">
+                <div class="card">
+                    <img class="card-img-top pt-3 px-3 pt-sm-2 px-sm-2 pt-md-3 px-md-3" style="width: 350px;height: 254px;"
+                         src="~/Images/Products/@item.ImageFileName" alt="Product">
+                    <div class="p-3 p-sm-2 p-md-3">
+                        <h5>@item.Name</h5>
+                        <p class="card-text mb-1">
+                            @item.Description
+                        </p>
+                        <p class="mb-2">
+                            Category: @item.CategoryName
+                        </p>
+                        <p class="float-left mt-2">Price: <strong> @item.UnitCost  </strong></p>
+                        <a href="~/OrderDetails/ShoppingCart?ProductId=@item.ProductId" class="btn btn-success float-right">
+                            Cart
+                        </a>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

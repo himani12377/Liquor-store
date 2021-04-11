@@ -1,0 +1,70 @@
+﻿<!--
+    2021-Q1
+    Custom styles for this page need to be loaded into the head of the parent layout page _Layout.cshtml
+    ref: https://stackoverflow.com/questions/17641972/add-css-js-or-other-content-to-a-views-head-from-partial-views
+
+    2021-Q1
+    Writeback ref:
+    https://lostechies.com/gabrielschenker/2013/12/17/angularjspart-5-pushing-data-to-the-server/
+    -->
+
+@section StyleAngularJS {
+    <style>
+        table, th, td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+            table tr:nth-child(odd) {
+                background-color: #f1f1f1;
+            }
+
+            table tr:nth-child(even) {
+                background-color: #ffffff;
+            }
+    </style>
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+
+<h1> Products via AngularJS </h1>
+
+<div ng-app="myApp" ng-controller="productsCtrl">
+
+    <table>
+        <tr ng-repeat="item in products" style="vertical-align:top">
+            <td>{{ item.Name }}</td>
+            <td> <img src="/images/products/{{ item.ImageFileName }} " style="width:100px;height:75px;"></td>
+            <!-- attempt add input field -->
+            <td>{{ item.UnitCost }}</td>
+            <td>{{ item.Description }}</td>
+        </tr>
+
+    </table>
+
+</div>
+
+<script>
+    var _$http;
+    var _$scope;
+    var app = angular.module('myApp', []);
+    app.controller('productsCtrl', xConstructor);
+
+    function xConstructor($scope, $http) {
+        _$http = $http;
+        _$scope = $scope;
+        $http.get("/ProductsNg/GetProducts").then(xReceive);
+    }
+
+    function xReceive(productsObject) {
+        //alert("json.length = " + json.length);
+        for (var i = 0; i < productsObject.data.length; i++) {
+            var unitCost = productsObject.data[i].UnitCost;
+            productsObject.data[i].UnitCost = parseFloat(unitCost).toFixed(2).toString();
+        }
+        _$scope.products = productsObject.data;
+    }
+
+</script>
